@@ -19,16 +19,16 @@ function setTimeBlockStyle() {
         // get the time block hour
         let thisRow = containerEl.children().eq(i);
         timeBlockHour = parseInt(thisRow.attr("data-hour"));
-        // set styling class base on whether the time block is past, present or future
+        // set styling class and disable textarea base on whether the time block is past, present or future
         if (timeBlockHour < currentHour) {
             console.log("time block hour: ", timeBlockHour, "(past)");
-            thisRow.children("textarea").addClass("past");
-        } else if (timeBlockHour > currentHour) {
-            console.log("time block hour: ", timeBlockHour, "(future)");
-            thisRow.children("textarea").addClass("future");
-        } else {
+            thisRow.children("textarea").addClass("past").attr("disabled",true);
+        } else if (timeBlockHour === currentHour) {
             console.log("time block hour: ", timeBlockHour, "(present)");
-            thisRow.children("textarea").addClass("present");
+            thisRow.children("textarea").addClass("present").attr("disabled",true);
+        } else {
+            console.log("time block hour: ", timeBlockHour, "(future)");
+            thisRow.children("textarea").addClass("future").attr("disabled",false);
         }
 
     }
