@@ -24,7 +24,7 @@ const schedule = {
 console.log(currentHour);
 function setTimeBlockStyle() {
     // loop for each time block (row) in the container
-    for (i=0; i<containerEl.children().length; i++ ) {
+    for (let i=0; i<containerEl.children().length; i++ ) {
         // get the time block hour
         let thisRow = containerEl.children().eq(i);
         let timeBlockHour = parseInt(thisRow.attr("data-hour"));
