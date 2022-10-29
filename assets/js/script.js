@@ -1,14 +1,8 @@
 // get current Date and hour
 var currentDate = moment().format("dddd, MMMM Do");
-//var currentHour = parseInt(moment().format("H"));
+var currentHour = parseInt(moment().format("H"));
 
-
-//****** for testing purpose ******/
-// var currentDate = "Satuday, October 29th";
-currentHour = 13; 
-//****** for testing purpose ******/
-
-// get elements and save them in variables
+// get HTML elements and save them in variables
 var currentDateEl = $("#currentDay");
 var containerEl = $(".container");
 
@@ -18,8 +12,24 @@ const schedule = {
     allHourTask:[]
 }
 
-
-
+function loadData() {
+    // get previous schedule from local storage
+    let prevSchedule = JSON.parse(localStorage.getItem("schedule"));
+    // if previous schedule exist and the date is today
+    if (prevSchedule !== null && prevSchedule.date === currentDate) {
+        // update the schedule object with data from local storage
+        schedule.allHourTask = prevSchedule.allHourTask;
+        // display task in each time block
+        for (let i=0; i<schedule.allHourTask.length; i++) {
+                let hour = schedule.allHourTask[i].hour;
+                let task = schedule.allHourTask[i].task;
+                let selector = `div[data-hour='${hour}']`;
+                // containerEl.children(selector).children("textarea").val = task;
+                containerEl.children(selector).children("textarea").val(task);
+            }
+    }
+    return;
+}
 
 function setTimeBlockStyle() {
     // loop for each time block (row) in the container
@@ -38,27 +48,6 @@ function setTimeBlockStyle() {
             thisRow.children("textarea").addClass("future");
         }
     }
-}
-
-function loadData() {
-    // get previous schedule from local storage
-    let prevSchedule = JSON.parse(localStorage.getItem("schedule"));
-    // if previous schedule exist and the date is today
-    if (prevSchedule !== null && prevSchedule.date === currentDate) {
-        // update the schedule object with data from local storage
-        schedule.allHourTask = prevSchedule.allHourTask;
-        // display task in each time block
-        for (let i=0; i<schedule.allHourTask.length; i++) {
-                let hour = schedule.allHourTask[i].hour;
-                let task = schedule.allHourTask[i].task;
-                let selector = `div[data-hour='${hour}']`;
-                // containerEl.children(selector).children("textarea").val = task;
-                containerEl.children(selector).children("textarea").val(task);
-            }
-            // children("textarea").val = task;
-        
-    }
-    return;
 }
 
 function saveTask(event) {
@@ -91,20 +80,23 @@ function saveTask(event) {
         schedule.allHourTask.push(hourTask);
         
     }
-    
     // store the schedule object into the local storage
     localStorage.setItem("schedule", JSON.stringify(schedule));
+    // diplay "saved" on the button
     clickedBtnEl.text("saved");
 }
 
 function handleTextFocus(event) {
+    // display 💾 on the button to indicate it can be saved
     $(event.target).parent().children(".saveBtn").text("💾");
 
 }
+
+/****** start here ******/
 currentDateEl.text(currentDate); // display current date in header
 loadData(); // load data from local starage
 setTimeBlockStyle(); // apply different style base on whether the time block is past, present or future
 containerEl.on("click", ".saveBtn", saveTask); // add event listener for save buttons
-containerEl.on("focus", "textarea", handleTextFocus) ;
+containerEl.on("focus", "textarea", handleTextFocus) ; // add event listener for the textarea
 
 
