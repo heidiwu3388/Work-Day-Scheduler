@@ -5,7 +5,7 @@ var currentDate = moment().format("dddd, MMMM Do");
 
 //****** for testing purpose ******/
 // var currentDate = "Satuday, October 29th";
-currentHour = 8; 
+currentHour = 13; 
 //****** for testing purpose ******/
 
 // get elements and save them in variables
@@ -31,15 +31,15 @@ function setTimeBlockStyle() {
         // set styling class and disable textarea base on whether the time block is past, present or future
         if (timeBlockHour < currentHour) {
             console.log("time block hour: ", timeBlockHour, "(past)");
-            thisRow.children("textarea").addClass("past").attr("disabled",true);
+            thisRow.children("textarea").addClass("past").attr("disabled", true);
             thisRow.children(".saveBtn").text("");
         } else if (timeBlockHour === currentHour) {
             console.log("time block hour: ", timeBlockHour, "(present)");
-            thisRow.children("textarea").addClass("present").attr("disabled",true);
+            thisRow.children("textarea").addClass("present").attr("disabled", true);
             thisRow.children(".saveBtn").text("");
         } else {
             console.log("time block hour: ", timeBlockHour, "(future)");
-            thisRow.children("textarea").addClass("future").attr("disabled",false);
+            thisRow.children("textarea").addClass("future");
         }
     }
 }
@@ -111,11 +111,17 @@ function saveTask(event) {
     // store the schedule object into the local storage
     console.log("schedule : ", schedule);
     localStorage.setItem("schedule", JSON.stringify(schedule));
+    clickedBtnEl.text("saved");
 }
 
+function handleTextFocus(event) {
+    $(event.target).parent().children(".saveBtn").text("💾");
+
+}
 currentDateEl.text(currentDate); // display current date in header
-setTimeBlockStyle(); // apply different style base on whether the time block is past, present or future
 loadData(); // load data from local starage
-containerEl.on("click", ".saveBtn", saveTask);
+setTimeBlockStyle(); // apply different style base on whether the time block is past, present or future
+containerEl.on("click", ".saveBtn", saveTask); // add event listener for save buttons
+containerEl.on("focus", "textarea", handleTextFocus) ;
 
 
