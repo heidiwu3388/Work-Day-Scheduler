@@ -10,7 +10,7 @@ N/A
 ## Usage
 
 - Go to https://heidiwu3388.github.io/Work-Day-Scheduler/
-- When you open the application, the current day is displayed at the top of the calendar.
+- When application is opened, the current day is displayed at the top of the calendar.
 - There are time blocks for standard business hours (9:00am - 5:00pm)
 - When it is the first time of the day the application is open, all time blocks events are blank.
 - Each time block is color-coded as follows: grey is for past hours, red is for current hour and green is for future hours.
